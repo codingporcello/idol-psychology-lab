@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="偶像特典會心理分析工具：用分層式總覽觀察每位偶像互動後的心情、壓力與消費後悔。"
+    />
+    <title>偶像特典會心理分析工具</title>
+    <link rel="icon" type="image/jpeg" href="public/hzme-icon.jpg" />
+    <link rel="apple-touch-icon" href="public/apple-touch-icon.jpg" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="config.js"></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <aside class="sync-panel" aria-label="同步狀態">
+      <span class="sync-status" id="syncStatus" data-status="local">本機模式</span>
+    </aside>
+
+    <header class="site-header">
+      <div class="mission-mark" aria-hidden="true">
+        <img src="public/hzme-icon.jpg" alt="" />
+      </div>
+      <p class="eyebrow">偶像推活研究室</p>
+      <h1>偶像特典會心理分析工具</h1>
+      <p class="fixed-line">分析互動後的心情變化，判斷她是在增加喜歡，還是在消耗自己。</p>
+    </header>
+
+    <nav class="app-nav" aria-label="主要功能">
+      <button class="nav-button is-active" type="button" data-view="dashboard">總覽</button>
+      <button class="nav-button" type="button" data-view="compare">比較分析</button>
+      <button class="nav-button" type="button" data-view="archive">歷史紀錄</button>
+    </nav>
+
+    <main class="app-shell">
+      <section class="sync-design-panel" aria-labelledby="sync-design-title">
+        <div>
+          <p class="eyebrow">雲端同步</p>
+          <h2 id="sync-design-title">Google Sheets 同步設定</h2>
+          <p>設定 Apps Script Web App URL 後，偶像資料與特典紀錄會同步到 Google Sheets；失敗時會保留本機快取。</p>
+        </div>
+        <form id="syncSettingsForm" class="sync-settings-form">
+          <label>
+            <span>Apps Script Web App URL</span>
+            <input
+              id="appsScriptUrl"
+              type="url"
+              placeholder="https://script.google.com/macros/s/xxxx/exec"
+            />
+          </label>
+          <div class="section-actions">
+            <button class="secondary-button" type="submit">儲存同步設定</button>
+            <button class="ghost-button" id="refreshSheetsButton" type="button">重新讀取</button>
+          </div>
+        </form>
+      </section>
+
+      <section id="dashboardView" class="view-panel" data-view-panel="dashboard"></section>
+      <section id="detailView" class="view-panel" data-view-panel="detail" hidden></section>
+      <section id="compareView" class="view-panel" data-view-panel="compare" hidden></section>
+      <section id="archiveView" class="view-panel" data-view-panel="archive" hidden></section>
+    </main>
+
+    <dialog id="recordDialog" class="modal">
+      <form id="recordForm" method="dialog" class="modal-card">
+        <div class="modal-head">
+          <div>
+            <p class="eyebrow">紀錄編輯</p>
+            <h2 id="recordDialogTitle">編輯特典紀錄</h2>
+          </div>
+          <button class="icon-button" value="cancel" type="button" data-close-dialog aria-label="關閉">×</button>
+        </div>
+        <div id="recordFormFields"></div>
+        <div class="form-actions">
+          <button class="secondary-button" value="cancel" type="button" data-close-dialog>取消</button>
+          <button class="primary-button" value="default" type="submit">儲存紀錄</button>
+        </div>
+      </form>
+    </dialog>
+  </body>
+</html>
