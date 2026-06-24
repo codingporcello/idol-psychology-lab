@@ -39,6 +39,8 @@ const state = {
   records: [],
   appsScriptUrl: "",
   syncStatus: "local",
+  syncSettingsExpanded: false,
+  idolFormExpanded: false,
   charts: {},
 };
 
@@ -58,6 +60,10 @@ const syncStatusLabel = document.querySelector("#syncStatus");
 const syncSettingsForm = document.querySelector("#syncSettingsForm");
 const appsScriptUrlInput = document.querySelector("#appsScriptUrl");
 const refreshSheetsButton = document.querySelector("#refreshSheetsButton");
+const syncSettingsPanel = document.querySelector(".sync-design-panel");
+const syncSettingsContent = document.querySelector("#syncSettingsContent");
+const syncSettingsToggleButton = document.querySelector("#syncSettingsToggleButton");
+const syncSettingsToggleAction = document.querySelector("#syncSettingsToggleAction");
 
 function todayString() {
   const today = new Date();
@@ -197,6 +203,18 @@ function saveState() {
       records: state.records.map(normalizeRecord),
     }),
   );
+}
+
+function setSyncSettingsExpanded(isExpanded) {
+  state.syncSettingsExpanded = isExpanded;
+  syncSettingsPanel.classList.toggle("settings-collapsed", !isExpanded);
+  syncSettingsContent.hidden = !isExpanded;
+  syncSettingsToggleButton.setAttribute("aria-expanded", String(isExpanded));
+  syncSettingsToggleAction.textContent = isExpanded ? "收起設定" : "打開設定";
+}
+
+function toggleSyncSettings() {
+  setSyncSettingsExpanded(!state.syncSettingsExpanded);
 }
 
 function setSyncStatus(status) {
@@ -411,32 +429,49 @@ function renderDashboard() {
         <h2>研究對象總覽</h2>
       </div>
     </div>
-    <form id="idolForm" class="panel" autocomplete="off">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">新增研究對象</p>
-          <h3>新增偶像</h3>
-        </div>
+    <section class="panel collapsible-panel ${state.idolFormExpanded ? "" : "settings-collapsed"}" aria-labelledby="idol-form-title">
+      <button
+        class="settings-toggle-card"
+        id="idolFormToggleButton"
+        type="button"
+        aria-expanded="${String(state.idolFormExpanded)}"
+        aria-controls="idolFormContent"
+      >
+        <span class="settings-toggle-icon" aria-hidden="true">＋</span>
+        <span>
+          <span class="eyebrow">新增研究對象</span>
+          <strong id="idol-form-title">新增偶像</strong>
+        </span>
+        <span class="settings-toggle-action">${state.idolFormExpanded ? "收起設定" : "打開設定"}</span>
+      </button>
+
+      <div class="settings-content" id="idolFormContent" ${state.idolFormExpanded ? "" : "hidden"}>
+        <form id="idolForm" autocomplete="off">
+          <div class="form-grid">
+            <label>偶像姓名<input name="name" required placeholder="例：南世菜" /></label>
+            <label>所屬團體<input name="group" required placeholder="例：AsIs" /></label>
+            <label>類型標籤<input name="type" required placeholder="例：情感型" /></label>
+            <label>狀態
+              <select name="status">
+                <option value="active">觀察中</option>
+                <option value="paused">暫停觀察</option>
+              </select>
+            </label>
+            <label class="full-span">備註<textarea name="memo" placeholder="這位偶像在心理分析上的初始假設"></textarea></label>
+          </div>
+          <div class="form-actions">
+            <button class="primary-button" type="submit">新增偶像</button>
+          </div>
+        </form>
       </div>
-      <div class="form-grid">
-        <label>偶像姓名<input name="name" required placeholder="例：南世菜" /></label>
-        <label>所屬團體<input name="group" required placeholder="例：AsIs" /></label>
-        <label>類型標籤<input name="type" required placeholder="例：情感型" /></label>
-        <label>狀態
-          <select name="status">
-            <option value="active">觀察中</option>
-            <option value="paused">暫停觀察</option>
-          </select>
-        </label>
-        <label class="full-span">備註<textarea name="memo" placeholder="這位偶像在心理分析上的初始假設"></textarea></label>
-      </div>
-      <div class="form-actions">
-        <button class="primary-button" type="submit">新增偶像</button>
-      </div>
-    </form>
+    </section>
     <div class="dashboard-grid">${state.idols.map(renderIdolCard).join("")}</div>
   `;
 
+  views.dashboard.querySelector("#idolFormToggleButton").addEventListener("click", () => {
+    state.idolFormExpanded = !state.idolFormExpanded;
+    renderDashboard();
+  });
   views.dashboard.querySelector("#idolForm").addEventListener("submit", handleIdolSubmit);
   views.dashboard.querySelectorAll("[data-open-idol]").forEach((button) => {
     button.addEventListener("click", () => setView("detail", button.dataset.openIdol));
@@ -972,6 +1007,7 @@ navButtons.forEach((button) => {
 });
 
 recordForm.addEventListener("submit", handleRecordSubmit);
+syncSettingsToggleButton.addEventListener("click", toggleSyncSettings);
 document.querySelectorAll("[data-close-dialog]").forEach((button) => {
   button.addEventListener("click", () => recordDialog.close());
 });

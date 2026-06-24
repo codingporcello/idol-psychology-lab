@@ -262,6 +262,70 @@ h3 {
   line-height: 1.6;
 }
 
+.collapsible-panel {
+  display: block;
+  padding: 0;
+  overflow: hidden;
+}
+
+.settings-toggle-card {
+  width: 100%;
+  min-height: 82px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  padding: 18px;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  text-align: left;
+}
+
+.settings-toggle-card:hover,
+.settings-toggle-card:focus-visible {
+  background: rgba(255, 143, 199, 0.08);
+  outline: none;
+}
+
+.settings-toggle-icon {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(139, 220, 255, 0.28);
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(255, 143, 199, 0.16), rgba(139, 220, 255, 0.11));
+  font-size: 1.2rem;
+}
+
+.settings-toggle-card strong {
+  display: block;
+  font-size: 1.45rem;
+  line-height: 1.2;
+}
+
+.settings-toggle-action {
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--silver);
+  white-space: nowrap;
+}
+
+.settings-content {
+  padding: 0 18px 18px;
+  border-top: 1px solid rgba(200, 208, 218, 0.1);
+}
+
+.settings-content .section-heading {
+  margin-top: 18px;
+}
+
+.settings-content form {
+  margin-top: 0;
+}
+
 .section-heading {
   display: flex;
   align-items: flex-start;
@@ -648,10 +712,19 @@ input[type="range"] {
     padding-top: 58px;
   }
 
-  .sync-design-panel,
   .section-heading,
   .record-card-head {
     display: grid;
+  }
+
+  .settings-toggle-card {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .settings-toggle-action {
+    grid-column: 1 / -1;
+    width: 100%;
+    text-align: center;
   }
 
   .form-grid,

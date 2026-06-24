@@ -38,26 +38,45 @@
     </nav>
 
     <main class="app-shell">
-      <section class="sync-design-panel" aria-labelledby="sync-design-title">
-        <div>
-          <p class="eyebrow">雲端同步</p>
-          <h2 id="sync-design-title">Google Sheets 同步設定</h2>
-          <p>設定 Apps Script Web App URL 後，偶像資料與特典紀錄會同步到 Google Sheets；失敗時會保留本機快取。</p>
-        </div>
-        <form id="syncSettingsForm" class="sync-settings-form">
-          <label>
-            <span>Apps Script Web App URL</span>
-            <input
-              id="appsScriptUrl"
-              type="url"
-              placeholder="https://script.google.com/macros/s/xxxx/exec"
-            />
-          </label>
-          <div class="section-actions">
-            <button class="secondary-button" type="submit">儲存同步設定</button>
-            <button class="ghost-button" id="refreshSheetsButton" type="button">重新讀取</button>
+      <section class="sync-design-panel collapsible-panel settings-collapsed" aria-labelledby="sync-design-title">
+        <button
+          class="settings-toggle-card"
+          id="syncSettingsToggleButton"
+          type="button"
+          aria-expanded="false"
+          aria-controls="syncSettingsContent"
+        >
+          <span class="settings-toggle-icon" aria-hidden="true">⚙️</span>
+          <span>
+            <span class="eyebrow">雲端同步</span>
+            <strong id="sync-design-title">Google Sheets 同步設定</strong>
+          </span>
+          <span class="settings-toggle-action" id="syncSettingsToggleAction">打開設定</span>
+        </button>
+
+        <div class="settings-content" id="syncSettingsContent" hidden>
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">雲端同步</p>
+              <h2>Google Sheets 同步設定</h2>
+              <p>設定 Apps Script Web App URL 後，偶像資料與特典紀錄會同步到 Google Sheets；失敗時會保留本機快取。</p>
+            </div>
           </div>
-        </form>
+          <form id="syncSettingsForm" class="sync-settings-form">
+            <label>
+              <span>Apps Script Web App URL</span>
+              <input
+                id="appsScriptUrl"
+                type="url"
+                placeholder="https://script.google.com/macros/s/xxxx/exec"
+              />
+            </label>
+            <div class="section-actions">
+              <button class="secondary-button" type="submit">儲存同步設定</button>
+              <button class="ghost-button" id="refreshSheetsButton" type="button">重新讀取</button>
+            </div>
+          </form>
+        </div>
       </section>
 
       <section id="dashboardView" class="view-panel" data-view-panel="dashboard"></section>
